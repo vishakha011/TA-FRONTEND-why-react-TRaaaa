@@ -33,11 +33,6 @@ function handleToggle(event) {
     let id = event.target.dataset.id;
     allMovies[id].status = !allMovies[id].status;
     localStorage.setItem('movies', JSON.stringify(allMovies));
-    // if(allMovies[id].status = !allMovies[id].status) {
-    //     event.target.innerText = "Watched";
-    // }else {
-    //     event.target.innerText = "To Watch";
-    // }
     renderMovieName(allMovies);
 }
 
