@@ -12,7 +12,7 @@ function handleKey(event){
             status : "Watched"
         };
         allMovies.push(movie);
-        console.log(allMovies)
+        // console.log(allMovies)
         input.value = "";
     };
     localStorage.setItem("movies", JSON.stringify(allMovies));
@@ -29,7 +29,7 @@ function handleDelete(event) {
 
 // toggle status
 function handleToggle(event) {
-    console.log(event.target)
+    // console.log(event.target)
     let id = event.target.dataset.id;
     allMovies[id].status = !allMovies[id].status;
     localStorage.setItem('movies', JSON.stringify(allMovies));
@@ -37,7 +37,7 @@ function handleToggle(event) {
 }
 
 // type : name of element
-function elm(type, attr= {}, ...children) {
+function elm(type, attr = {}, ...children) {
     let element = document.createElement(type);
     for(let key in attr) {
         if(key.startsWith('data-')) {
@@ -46,7 +46,17 @@ function elm(type, attr= {}, ...children) {
             element[key] = attr[key]
         }
     }
-    console.log(children)
+    // console.log(children)
+    children.forEach(child => {
+        if(typeof child === "object") {
+            element.append(child)
+        }
+        if(typeof child === "string") {
+            // cannot append a string, but can append an object
+            let node = document.createTextNode(child);
+            element.append(node);
+        }
+    })
     return element;
 }
 
@@ -56,39 +66,43 @@ function renderMovieName(allMovies) {
     allMovies.forEach((movie, index) => {
 
         // create div
-        let div = elm("div", {
-            className: "movies flex-between",
-            innerText: movie.name.charAt(0).toUpperCase() + movie.name.slice(1)
-        } 
+        let div = elm("div", 
+        {
+            className: "movies flex-between"
+        }, 
+        movie.name.charAt(0).toUpperCase() + movie.name.slice(1) 
         );
 
         let subDiv = elm(
             "div",
             {}, 
-            elm("button", {
-                "data-id": index,
-                innerText: movie.status ? "Watched" : "To watch"
-            }),
-            elm('i', {
-                classList: "fas fa-times",
+            elm("button", 
+            {
+                "data-id": index
+            }, 
+            movie.status ? "Watched" : "To watch"),
+            elm('i', 
+            {
+                className: "fas fa-times",
                 "data-id": index
             })
         );
-        // let button = elm("button", {
-        //     "data-id": index,
-        //     innerText: movie.status ? "Watched" : "To watch"
-        // });
-        // let deleteMovie = elm('i', {
-        //     classList: "fas fa-times",
-        //     "data-id": index
-        // });
-
-        subDiv.append(button, deleteMovie)
+       
         div.append(subDiv);
         root.append(div);
+        
+        subDiv.addEventListener("click", (e) => {
+            // console.log(e.target.tagName)
+            if (e.target.tagName == "BUTTON") {
+                handleToggle(e);
+            }
+        });
 
-        deleteMovie.addEventListener("click", handleDelete);
-        button.addEventListener("click", handleToggle)
+        subDiv.addEventListener("click", (e) => {
+            if (e.target.tagName == "I") {
+                handleDelete(e);
+            }
+        });
     });
 };
 
