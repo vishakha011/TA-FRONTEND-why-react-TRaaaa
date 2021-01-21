@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Refactored Watch List using JSX</title>
+</head>
+<body>
+    <header class="flex-center">
+        <h1>Movie Watch List</h1>
+    </header>
+    <div class="container">
+        <input type="text" name="movie-list" placeholder="Enter movie name" required>
+        <div class="movie-container"></div>
+
+
+        <script
+        crossorigin
+        src="https://unpkg.com/react@17/umd/react.development.js"
+      ></script>
+      <script
+        crossorigin
+        src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"
+      ></script>
+      
+    <script src="https://kit.fontawesome.com/593a9cd241.js" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script type="text/babel">
+    let root = document.querySelector(".movie-container");
+    let input = document.querySelector("input");
+
+    let allMovies = JSON.parse(localStorage.getItem("movies")) || [];
+
+    // get the data
+    function handleKey(event){
+        let value = event.target.value;
+        if(event.keyCode === 13 && value !== "") {
+            let movie = {
+                name : value,
+                status : "Watched"
+            };
+            allMovies.push(movie);
+            // console.log(allMovies)
+            input.value = "";
+        };
+        localStorage.setItem("movies", JSON.stringify(allMovies));
+        renderMovieName(allMovies);
+    };
+
+    // handel delete
+    function handleDelete(event) {
+        let id = event.target.dataset.id;
+        allMovies.splice(id, 1);
+        localStorage.setItem('movies', JSON.stringify(allMovies));
+        renderMovieName(allMovies);
+    }
+
+    // toggle status
+    function handleToggle(event) {
+        // console.log(event.target)
+        let id = event.target.dataset.id;
+        allMovies[id].status = !allMovies[id].status;
+        localStorage.setItem('movies', JSON.stringify(allMovies));
+        renderMovieName(allMovies);
+    }
+
+    function renderMovieName(allMovies) {
+        // root.innerText = "";
+        let movieUI = allMovies.map((movie, index) => {
+
+            // create div
+            // let div = React.createElement(
+            //     "div", 
+            //     {
+            //         className: "movies flex-between"
+            //     }, 
+            //     movie.name.charAt(0).toUpperCase() + movie.name.slice(1),
+
+            //     React.createElement(
+            //         "div",
+            //         {}, 
+            //         React.createElement(
+            //             "button", 
+            //             {
+            //                 "data-id": index
+            //             }, 
+            //             movie.status ? "Watched" : "To watch"),
+            //             React.createElement(
+            //                 'i', 
+            //                 {
+            //                     className: "fas fa-times",
+            //                     "data-id": index
+            //                 })
+            //     )
+            // );
+            // root.append(div);
+            return ( 
+                <div className = "movies flex-between"> 
+                    {movie.name.charAt(0).toUpperCase() + movie.name.slice(1)}
+                <div>
+                    <button data-id = {index}>{ movie.status ? "Watched" : "To watch"}</button>
+                    <i className = "fas fa-times" data-id= {index}></i>
+                </div>
+            </div>
+            )
+           
+
+        });
+        ReactDOM.render(movieUI, root);
+    };
+
+    let div = document.querySelector("div")
+    div.addEventListener("click", (e) => {
+        // console.log(e.target.tagName)
+        if (e.target.tagName == "BUTTON") {
+            handleToggle(e);
+        }
+        if (e.target.tagName == "I") {
+            handleDelete(e);
+        }
+    });
+
+    renderMovieName(allMovies)
+
+    localStorage.setItem("movies", JSON.stringify(allMovies));
+    input.addEventListener("keyup", handleKey);
+        </script>
+</body>
+</html>
