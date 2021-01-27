@@ -1,0 +1,34 @@
+[
+    {
+        "title": "How To Find Beautiful Workspace?",
+        "description": "Lorem ipsum, dolor sit amet consectetur adipisicing elit.",
+        "imgUrl": "./images/blog-image1.jpg",
+        "imgAlt": "work desk",
+        "date": "December 22, 2017"
+    },
+
+    {
+        "title": "Woman Sportwear",
+        "description": "Lorem ipsum, dolor sit amet consectetur adipisicing elit.",
+        "imgUrl": "./images/blog-image2.jpg",
+        "imgAlt": "woman wearing sportwear",
+        "date": "December 18, 2017"
+    },
+
+    {
+        "title": "New Creative Fashion",
+        "description": "Lorem ipsum, dolor sit amet consectetur adipisicing elit.",
+        "imgUrl": "./images/blog-image3.jpg",
+        "imgAlt": "man wearing sweater",
+        "date": " December 14, 2017"
+    },
+
+    {
+        "title": "Minimalist Design Trend In 2018",
+        "description": "Lorem ipsum, dolor sit amet consectetur adipisicing elit.",
+        "imgUrl": "./images/blog-image4.jpg",
+        "imgAlt": "sunglasses",
+        "date": " December 10, 2017"
+    }
+
+]
